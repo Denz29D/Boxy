@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Push-up Count Display -->
+    <TextView
+        android:id="@+id/tv_pushup_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Push-ups: 0"
+        android:textAppearance="@style/TextAppearance.App.Headline1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+    <!-- Instructions -->
+    <TextView
+        android:id="@+id/tv_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perform push-ups. Your count will update automatically."
+        android:textAppearance="@style/TextAppearance.App.Body1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pushup_count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

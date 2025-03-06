@@ -11,16 +11,18 @@
         android:id="@+id/nav_home"
         android:name="com.example.boxy.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/activity_home_acivity" />
+        tools:layout="@layout/activity_home_acivity">
+        <!-- Action to navigate to push-up counter -->
+        <action
+            android:id="@+id/action_nav_home_to_pushUpCounterFragment"
+            app:destination="@id/pushUpCounterFragment" />
+    </fragment>
 
-    <!-- Workouts Fragment -->
     <fragment
         android:id="@+id/workoutsFragment"
         android:name="com.example.boxy.WorkoutsFragment"
         android:label="Workouts"
         tools:layout="@layout/fragment_workouts">
-
-        <!-- Add the action to go from Workouts to WorkoutDetails -->
         <action
             android:id="@+id/action_workoutsFragment_to_workoutDetailsFragment"
             app:destination="@id/workoutDetailsFragment" />
@@ -44,20 +46,26 @@
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
 
-
     <!-- Detail Fragments (Not part of bottom nav) -->
     <fragment
         android:id="@+id/workoutDetailsFragment"
         android:name="com.example.boxy.WorkoutDetails"
         android:label="Workout Details"
         tools:layout="@layout/fragment_workout_details">
-
         <argument
             android:name="workoutId"
             android:defaultValue=""
             app:argType="string" />
     </fragment>
 
+    <!-- Push-Up Counter Fragment -->
+    <fragment
+        android:id="@+id/pushUpCounterFragment"
+        android:name="com.example.boxy.PushUpCounterFragment"
+        android:label="Push-Up Counter"
+        tools:layout="@layout/fragment_push_up_counter" />
+
+</navigation>
 
 
 
@@ -86,4 +94,3 @@
 <!--    <action-->
 <!--        android:id="@+id/action_global_leaderboardFragment"-->
 <!--        app:destination="@id/leaderboardFragment" />-->
-</navigation>

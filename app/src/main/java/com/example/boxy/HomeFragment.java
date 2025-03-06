@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.boxy.models.Video;
@@ -71,6 +73,13 @@ public class HomeFragment extends Fragment {
                             startActivity(intent);
                         });
 
+
+                        Button btnPushUpCounter = view.findViewById(R.id.btn_pushup_counter);
+                        btnPushUpCounter.setOnClickListener(v -> {
+                            // Navigate to the PushUpCounterFragment using the navigation action defined in the nav graph.
+                            Navigation.findNavController(view)
+                                    .navigate(R.id.action_nav_home_to_pushUpCounterFragment);
+                        });
                         // Add the video card to the container
                         videoContainer.addView(videoCard);
                     }
