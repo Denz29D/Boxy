@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -48,6 +49,13 @@
                 android:src="@drawable/ic_workouts"
                 android:background="@color/gray_light"
                 app:tint="@color/primary" />
+
+            <!-- YouTube Player View (NEW) -->
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/youtube_player_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
 
             <!-- Workout Stats -->
             <androidx.cardview.widget.CardView
@@ -143,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="This high-intensity interval training workout combines boxing techniques with cardio exercises to help you burn calories and improve your boxing skills. Perfect for intermediate boxers looking to challenge themselves."
+                android:text="This high-intensity interval training workout combines boxing techniques with cardio exercises to help you burn calories and improve your boxing skills."
                 android:textAppearance="@style/TextAppearance.App.Body1" />
 
             <!-- Exercises Section -->

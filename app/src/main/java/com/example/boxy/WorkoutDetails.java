@@ -1,64 +1,150 @@
 package com.example.boxy;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Button;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WorkoutDetails#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+import com.example.boxy.models.Workout;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class WorkoutDetails extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private String workoutId;
+    private Workout currentWorkout;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // UI references
+    private TextView tvWorkoutTitle, tvWorkoutDescription, tvDuration, tvDifficulty, tvCalories, tvFullDescription;
+    private ImageView ivWorkout;
+    private Button btnStartWorkout;
+    private YouTubePlayerView youtubePlayerView;
 
     public WorkoutDetails() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment WorkoutDetails.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static WorkoutDetails newInstance(String param1, String param2) {
-        WorkoutDetails fragment = new WorkoutDetails();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        // Required empty constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_workout_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_workout_details, container, false);
+
+        // If you're passing workoutId via Navigation Component or Bundle:
+        if (getArguments() != null) {
+            workoutId = getArguments().getString("workoutId", "");
+        }
+
+        // Initialize UI
+        tvWorkoutTitle = view.findViewById(R.id.tv_workout_title);
+        tvWorkoutDescription = view.findViewById(R.id.tv_workout_description);
+        tvDuration = view.findViewById(R.id.tv_duration);
+        tvDifficulty = view.findViewById(R.id.tv_difficulty);
+        tvCalories = view.findViewById(R.id.tv_calories);
+        tvFullDescription = view.findViewById(R.id.tv_workout_full_description);
+        ivWorkout = view.findViewById(R.id.iv_workout);
+        btnStartWorkout = view.findViewById(R.id.btn_start_workout);
+        youtubePlayerView = view.findViewById(R.id.youtube_player_view);
+
+        // Make sure to observe the lifecycle for the YouTubePlayerView
+        getLifecycle().addObserver(youtubePlayerView);
+
+        // Load the workout from Firestore
+        loadWorkoutDetails();
+
+        // Mark as complete when user taps "Start Workout"
+        btnStartWorkout.setOnClickListener(v -> markWorkoutComplete());
+
+        return view;
+    }
+
+    private void loadWorkoutDetails() {
+        if (TextUtils.isEmpty(workoutId)) return;
+
+        FirebaseFirestore.getInstance().collection("workouts")
+                .document(workoutId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        currentWorkout = documentSnapshot.toObject(Workout.class);
+                        if (currentWorkout != null) {
+                            populateUI(currentWorkout);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Snackbar.make(requireView(), "Failed to load workout.", Snackbar.LENGTH_SHORT).show();
+                });
+    }
+
+    private void populateUI(Workout workout) {
+        // Title & top description
+        tvWorkoutTitle.setText(workout.getTitle());
+        String shortDesc = workout.getDuration() + " • " + workout.getDifficulty() + " • " + workout.getCalories() + " calories";
+        tvWorkoutDescription.setText(shortDesc);
+
+        // Stats card
+        tvDuration.setText(workout.getDuration());
+        tvDifficulty.setText(workout.getDifficulty());
+        tvCalories.setText(String.valueOf(workout.getCalories()));
+
+        // Full description
+        tvFullDescription.setText(workout.getDescription());
+
+        // Load workout image
+        Glide.with(this).load(workout.getImageUrl()).into(ivWorkout);
+
+        // Render video if we have a valid videoId
+        if (!TextUtils.isEmpty(workout.getVideoId())) {
+            youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                @Override
+                public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                    // Cue the video; loadVideo(...) if you want autoplay
+                    youTubePlayer.cueVideo(workout.getVideoId(), 0f);
+                }
+            });
+        } else {
+            // Hide or remove the YouTube player if there's no video
+            youtubePlayerView.setVisibility(View.GONE);
+        }
+    }
+
+    private void markWorkoutComplete() {
+        if (currentWorkout == null) return;
+        String userId = FirebaseAuth.getInstance().getUid();
+        if (userId == null) return;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("workoutId", currentWorkout.getWorkoutId());
+        data.put("completedAt", FieldValue.serverTimestamp());
+
+        FirebaseFirestore.getInstance().collection("users")
+                .document(userId)
+                .collection("completedWorkouts")
+                .document(currentWorkout.getWorkoutId())
+                .set(data)
+                .addOnSuccessListener(aVoid -> {
+                    Snackbar.make(requireView(), "Workout marked complete!", Snackbar.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Snackbar.make(requireView(), "Failed to mark complete: " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                });
     }
 }
