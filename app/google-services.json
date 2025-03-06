@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "655907561151",
+    "project_id": "boxy-261b6",
+    "storage_bucket": "boxy-261b6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655907561151:android:e31f9ad6814d20340a300a",
+        "android_client_info": {
+          "package_name": "com.example.boxy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD8zNMe82KOEAHB3oCNQpNZbKR-RXwiug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

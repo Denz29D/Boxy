@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/welcome"
+            android:textAppearance="@style/TextAppearance.App.Headline1"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="John Doe"
+            android:textAppearance="@style/TextAppearance.App.Subtitle1" />
+
+        <!-- Health Stats Card -->
+        <androidx.cardview.widget.CardView
+            style="@style/CardView.App"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/health_monitor"
+                    android:textAppearance="@style/TextAppearance.App.Headline2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:contentDescription="@string/calories_burned"
+                            android:src="@drawable/ic_health"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="450"
+                            android:textAppearance="@style/TextAppearance.App.Headline2"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/calories_burned"
+                            android:textAppearance="@style/TextAppearance.App.Body1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:contentDescription="@string/duration"
+                            android:src="@drawable/ic_workouts"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="45 min"
+                            android:textAppearance="@style/TextAppearance.App.Headline2"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/duration"
+                            android:textAppearance="@style/TextAppearance.App.Body1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:contentDescription="@string/heart_rate"
+                            android:src="@drawable/ic_health"
+                            app:tint="@color/error" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="75 bpm"
+                            android:textAppearance="@style/TextAppearance.App.Headline2"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/heart_rate"
+                            android:textAppearance="@style/TextAppearance.App.Body1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Tutorial Videos Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/tutorials"
+            android:textAppearance="@style/TextAppearance.App.Headline2" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Tutorial Video Card 1 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_tutorial_1"
+                    style="@style/CardView.App"
+                    android:layout_width="280dp"
+                    android:layout_height="180dp"
+                    android:layout_marginEnd="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="Tutorial Video"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_video"
+                            android:background="@color/gray_light"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Basic Boxing Stance"
+                            android:textAppearance="@style/TextAppearance.App.Subtitle1"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Learn the proper boxing stance"
+                            android:textAppearance="@style/TextAppearance.App.Body1" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Tutorial Video Card 2 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_tutorial_2"
+                    style="@style/CardView.App"
+                    android:layout_width="280dp"
+                    android:layout_height="180dp"
+                    android:layout_marginEnd="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="Tutorial Video"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_video"
+                            android:background="@color/gray_light"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Jab Technique"
+                            android:textAppearance="@style/TextAppearance.App.Subtitle1"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Master the basic jab punch"
+                            android:textAppearance="@style/TextAppearance.App.Body1" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Tutorial Video Card 3 -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_tutorial_3"
+                    style="@style/CardView.App"
+                    android:layout_width="280dp"
+                    android:layout_height="180dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:contentDescription="Tutorial Video"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_video"
+                            android:background="@color/gray_light"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Footwork Drills"
+                            android:textAppearance="@style/TextAppearance.App.Subtitle1"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Improve your boxing footwork"
+                            android:textAppearance="@style/TextAppearance.App.Body1" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Feature Cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <!-- Gym Locator Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_gym_locator"
+                style="@style/CardView.App"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/gym_locator"
+                        android:src="@drawable/ic_gym"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/gym_locator"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle1"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Leaderboard Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_leaderboard"
+                style="@style/CardView.App"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/leaderboard"
+                        android:src="@drawable/ic_leaderboard"
+                        app:tint="@color/primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/leaderboard"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle1"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- Start Workout Button -->
+        <Button
+            android:id="@+id/btn_start_workout"
+            style="@style/Button.App.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/start_workout" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

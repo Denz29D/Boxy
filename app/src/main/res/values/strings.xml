@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BoxFit</string>
+
+    <!-- Login & Registration -->
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="dont_have_account">Don\'t have an account? Sign Up</string>
+    <string name="name">Full Name</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_password_instructions">Enter your email address and we\'ll send you instructions to reset your password.</string>
+    <string name="send_reset_link">Send Reset Link</string>
+    <string name="back_to_login">Back to Login</string>
+
+    <!-- Home Screen -->
+    <string name="welcome">Welcome to BoxFit</string>
+    <string name="tutorials">Tutorial Videos</string>
+    <string name="health_monitor">Health Monitor</string>
+    <string name="gym_locator">Find Nearby Gyms</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="workout_tracker">Workout Tracker</string>
+    <string name="profile">Profile</string>
+    <string name="view_all">View All</string>
+    <string name="today_stats">Today\'s Stats</string>
+    <string name="weekly_progress">Weekly Progress</string>
+    <string name="monthly_progress">Monthly Progress</string>
+    <string name="recommended_workouts">Recommended Workouts</string>
+    <string name="recent_workouts">Recent Workouts</string>
+
+    <!-- Navigation -->
+    <string name="home">Home</string>
+    <string name="workouts">Workouts</string>
+    <string name="discover">Discover</string>
+    <string name="stats">Stats</string>
+
+    <!-- Workout -->
+    <string name="start_workout">Start Workout</string>
+    <string name="pause_workout">Pause</string>
+    <string name="resume_workout">Resume</string>
+    <string name="end_workout">End Workout</string>
+    <string name="calories_burned">Calories Burned</string>
+    <string name="duration">Duration</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="workout_complete">Workout Complete!</string>
+    <string name="workout_summary">Workout Summary</string>
+    <string name="save_workout">Save Workout</string>
+    <string name="discard_workout">Discard</string>
+    <string name="workout_intensity">Workout Intensity</string>
+    <string name="low_intensity">Low</string>
+    <string name="medium_intensity">Medium</string>
+    <string name="high_intensity">High</string>
+    <string name="beginner">Beginner</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="advanced">Advanced</string>
+    <string name="workout_type">Workout Type</string>
+    <string name="boxing_basics">Boxing Basics</string>
+    <string name="cardio_boxing">Cardio Boxing</string>
+    <string name="strength_training">Strength Training</string>
+    <string name="shadow_boxing">Shadow Boxing</string>
+    <string name="heavy_bag">Heavy Bag</string>
+    <string name="speed_bag">Speed Bag</string>
+    <string name="jump_rope">Jump Rope</string>
+    <string name="footwork">Footwork</string>
+    <string name="punches">Punches</string>
+    <string name="combinations">Combinations</string>
+    <string name="defense">Defense</string>
+    <string name="minutes">minutes</string>
+    <string name="seconds">seconds</string>
+    <string name="reps">reps</string>
+    <string name="sets">sets</string>
+    <string name="rest">Rest</string>
+    <string name="next_exercise">Next: %1$s</string>
+    <string name="exercise_complete">Exercise Complete!</string>
+    <string name="workout_image">Workout Image</string>
+    <string name="description">Description</string>
+    <string name="exercises">Exercises</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="calories">Calories</string>
+
+    <!-- Workout Types -->
+    <string name="jab">Jab</string>
+    <string name="cross">Cross</string>
+    <string name="hook">Hook</string>
+    <string name="uppercut">Uppercut</string>
+    <string name="bob_and_weave">Bob and Weave</string>
+    <string name="slip">Slip</string>
+    <string name="push_up">Push-up</string>
+    <string name="sit_up">Sit-up</string>
+    <string name="burpee">Burpee</string>
+    <string name="squat">Squat</string>
+    <string name="lunge">Lunge</string>
+    <string name="plank">Plank</string>
+    <string name="mountain_climber">Mountain Climber</string>
+    <string name="jumping_jack">Jumping Jack</string>
+
+    <!-- Stats Screen -->
+    <string name="total_workouts">Total Workouts</string>
+    <string name="total_time">Total Time</string>
+    <string name="total_calories">Total Calories</string>
+    <string name="average_heart_rate">Avg. Heart Rate</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="progress">Progress</string>
+    <string name="achievements">Achievements</string>
+    <string name="streak">Current Streak</string>
+    <string name="days">days</string>
+    <string name="personal_bests">Personal Bests</string>
+    <string name="longest_workout">Longest Workout</string>
+    <string name="most_calories">Most Calories</string>
+    <string name="highest_heart_rate">Highest Heart Rate</string>
+
+    <!-- Discover Screen -->
+    <string name="trending">Trending</string>
+    <string name="popular">Popular</string>
+    <string name="new_content">New</string>
+    <string name="boxing_tips">Boxing Tips</string>
+    <string name="nutrition">Nutrition</string>
+    <string name="recovery">Recovery</string>
+    <string name="equipment">Equipment</string>
+    <string name="articles">Articles</string>
+    <string name="videos">Videos</string>
+    <string name="coaches">Coaches</string>
+    <string name="search_hint">Search for workouts, tips, etc.</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="categories">Categories</string>
+
+    <!-- Profile Screen -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="fitness_level">Fitness Level</string>
+    <string name="goals">Goals</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="privacy">Privacy</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="about">About</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="version">Version</string>
+    <string name="app_version">1.0.0</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="confirm_delete_account">Are you sure you want to delete your account? This action cannot be undone.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="day_streak">Day Streak</string>
+    <string name="level">Level</string>
+
+    <!-- Gym Locator -->
+    <string name="nearby_gyms">Nearby Boxing Gyms</string>
+    <string name="distance">Distance</string>
+    <string name="rating">Rating</string>
+    <string name="open_now">Open Now</string>
+    <string name="directions">Directions</string>
+    <string name="call">Call</string>
+    <string name="website">Website</string>
+    <string name="reviews">Reviews</string>
+    <string name="hours">Hours</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="miles">miles</string>
+    <string name="kilometers">km</string>
+
+    <!-- Leaderboard -->
+    <string name="global">Global</string>
+    <string name="friends">Friends</string>
+    <string name="local">Local</string>
+    <string name="rank">Rank</string>
+    <string name="user">User</string>
+    <string name="score">Score</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="view_profile">View Profile</string>
+    <string name="challenge">Challenge</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
+    <string name="all_time">All Time</string>
+
+    <!-- Misc -->
+    <string name="loading">Loading...</string>
+    <string name="search">Search</string>
+    <string name="error_message">Something went wrong. Please try again.</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="success">Success!</string>
+    <string name="warning">Warning</string>
+    <string name="error">Error</string>
+    <string name="info">Information</string>
+    <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="done">Done</string>
+</resources>
+

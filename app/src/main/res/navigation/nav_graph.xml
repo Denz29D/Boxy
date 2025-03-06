@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/nav_home">
+
+    <!-- Home Fragment -->
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.boxfit.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <!-- Example actions from Home -->
+        <action
+            android:id="@+id/action_homeFragment_to_workoutDetailsFragment"
+            app:destination="@id/workoutDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_tutorialDetailsFragment"
+            app:destination="@id/tutorialDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_gymLocatorFragment"
+            app:destination="@id/gymLocatorFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_leaderboardFragment"
+            app:destination="@id/leaderboardFragment" />
+    </fragment>
+
+    <!-- Workouts Fragment -->
+    <fragment
+        android:id="@+id/nav_workouts"
+        android:name="com.example.boxfit.fragments.WorkoutsFragment"
+        android:label="Workouts"
+        tools:layout="@layout/fragment_workouts">
+        <action
+            android:id="@+id/action_workoutsFragment_to_workoutDetailsFragment"
+            app:destination="@id/workoutDetailsFragment" />
+    </fragment>
+
+    <!-- Discover Fragment -->
+    <fragment
+        android:id="@+id/nav_discover"
+        android:name="com.example.boxfit.fragments.DiscoverFragment"
+        android:label="Discover"
+        tools:layout="@layout/fragment_discover">
+        <action
+            android:id="@+id/action_discoverFragment_to_tutorialDetailsFragment"
+            app:destination="@id/tutorialDetailsFragment" />
+    </fragment>
+
+    <!-- Stats Fragment -->
+    <fragment
+        android:id="@+id/nav_stats"
+        android:name="com.example.boxfit.fragments.StatsFragment"
+        android:label="Stats"
+        tools:layout="@layout/fragment_stats" />
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.boxfit.fragments.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <!-- Workout Details (not part of bottom nav) -->
+    <fragment
+        android:id="@+id/workoutDetailsFragment"
+        android:name="com.example.boxfit.fragments.WorkoutDetailsFragment"
+        android:label="Workout Details"
+        tools:layout="@layout/fragment_workout_details">
+        <argument
+            android:name="workoutId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- Tutorial Details (not part of bottom nav) -->
+    <fragment
+        android:id="@+id/tutorialDetailsFragment"
+        android:name="com.example.boxfit.fragments.TutorialDetailsFragment"
+        android:label="Tutorial Details"
+        tools:layout="@layout/fragment_tutorial_details">
+        <argument
+            android:name="tutorialId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- Gym Locator (not part of bottom nav) -->
+    <fragment
+        android:id="@+id/gymLocatorFragment"
+        android:name="com.example.boxfit.fragments.GymLocatorFragment"
+        android:label="Gym Locator"
+        tools:layout="@layout/fragment_gym_locator" />
+
+    <!-- Leaderboard (not part of bottom nav) -->
+    <fragment
+        android:id="@+id/leaderboardFragment"
+        android:name="com.example.boxfit.fragments.LeaderboardFragment"
+        android:label="Leaderboard"
+        tools:layout="@layout/fragment_leaderboard" />
+
+</navigation>
