@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_nav_home_to_pushUpCounterFragment"
             app:destination="@id/pushUpCounterFragment" />
+        <!-- NEW: Action to navigate to Gym Locator -->
+        <action
+            android:id="@+id/action_nav_home_to_gymLocatorFragment"
+            app:destination="@id/gymLocatorFragment" />
     </fragment>
 
     <fragment
@@ -63,34 +67,13 @@
         android:id="@+id/pushUpCounterFragment"
         android:name="com.example.boxy.PushUpCounterFragment"
         android:label="Push-Up Counter"
-        tools:layout="@layout/fragment_push_up_counter" />
+        tools:layout="@layout/fragment_pushup_counter" />
+
+    <!-- NEW: Gym Locator Fragment -->
+    <fragment
+        android:id="@+id/gymLocatorFragment"
+        android:name="com.example.boxy.GymLocatorFragment"
+        android:label="Gym Locator"
+        tools:layout="@layout/activity_maps" />
 
 </navigation>
-
-
-
-    <!--    <fragment-->
-<!--        android:id="@+id/gymLocatorFragment"-->
-<!--        android:name="com.example.boxfit.fragments.GymLocatorFragment"-->
-<!--        android:label="Gym Locator"-->
-<!--        tools:layout="@layout/fragment_gym_locator" />-->
-
-<!--    <fragment-->
-<!--        android:id="@+id/leaderboardFragment"-->
-<!--        android:name="com.example.boxfit.fragments.LeaderboardFragment"-->
-<!--        android:label="Leaderboard"-->
-<!--        tools:layout="@layout/fragment_leaderboard" />-->
-
-<!--    &lt;!&ndash; Global Actions for Detail Screens &ndash;&gt;-->
-<!--    <action-->
-<!--        android:id="@+id/action_global_workoutDetailsFragment"-->
-<!--        app:destination="@id/workoutDetailsFragment" />-->
-<!--    <action-->
-<!--        android:id="@+id/action_global_tutorialDetailsFragment"-->
-<!--        app:destination="@id/tutorialDetailsFragment" />-->
-<!--    <action-->
-<!--        android:id="@+id/action_global_gymLocatorFragment"-->
-<!--        app:destination="@id/gymLocatorFragment" />-->
-<!--    <action-->
-<!--        android:id="@+id/action_global_leaderboardFragment"-->
-<!--        app:destination="@id/leaderboardFragment" />-->

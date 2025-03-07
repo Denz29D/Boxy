@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -44,6 +45,12 @@ public class HomeFragment extends Fragment {
                 return insets;
             });
         }
+        CardView cardGymLocator = view.findViewById(R.id.card_gym_locator);
+        cardGymLocator.setOnClickListener(v -> {
+            // Navigate to the gym locator fragment
+            Navigation.findNavController(view)
+                    .navigate(R.id.action_nav_home_to_gymLocatorFragment);
+        });
 
         // Get a reference to the LinearLayout container inside the HorizontalScrollView
         LinearLayout videoContainer = view.findViewById(R.id.video_container);
