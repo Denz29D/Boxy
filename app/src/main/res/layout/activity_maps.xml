@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         map:mapType="normal" />
 
-    <!-- Search Bar Overlay -->
+    <!-- Search Bar & Back Button Overlay -->
     <LinearLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
@@ -23,6 +23,17 @@
         android:padding="16dp"
         android:background="#AAFFFFFF">
 
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+
+            android:layout_marginEnd="8dp" />
+
+        <!-- Location Input -->
         <EditText
             android:id="@+id/et_location"
             android:layout_width="0dp"
@@ -30,6 +41,7 @@
             android:layout_weight="1"
             android:hint="Enter postcode or location" />
 
+        <!-- Search Button -->
         <Button
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"

@@ -21,10 +21,10 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
     private List<Workout> workoutList;
     private OnWorkoutActionListener listener;
 
-    // Add a second callback method: onWorkoutClicked(...)
+    // Interface for handling workout actions (navigation & marking as complete)
     public interface OnWorkoutActionListener {
         void onMarkWorkoutComplete(Workout workout);
-        void onWorkoutClicked(Workout workout);  // NEW
+        void onWorkoutClicked(Workout workout);
     }
 
     public WorkoutAdapter(Context context, List<Workout> workoutList, OnWorkoutActionListener listener) {
@@ -47,9 +47,10 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
         holder.tvWorkoutDescription.setText(
                 workout.getDuration() + " • " + workout.getDifficulty() + " • " + workout.getCalories() + " calories"
         );
+
         Glide.with(context).load(workout.getImageUrl()).into(holder.ivWorkout);
 
-        // Start button -> callback onWorkoutClicked(...)
+        // Start button -> Navigate to Workout Details (Handled in WorkoutsFragment)
         holder.btnStart.setOnClickListener(v -> {
             Toast.makeText(context, "Navigating to workout details", Toast.LENGTH_SHORT).show();
             if (listener != null) {
@@ -57,7 +58,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
             }
         });
 
-        // Mark Complete button (optional if you add it in your layout)
+        // Mark Complete button (optional: make sure it exists in item_workout.xml)
         if (holder.btnMarkComplete != null) {
             holder.btnMarkComplete.setOnClickListener(v -> {
                 if (listener != null) {

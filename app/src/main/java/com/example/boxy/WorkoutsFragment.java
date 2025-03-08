@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.boxy.adapters.WorkoutAdapter;
@@ -78,12 +77,19 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 );
     }
 
-    // 2) Called when user taps "Start" -> navigate to detail fragment
+    // 2) Called when user taps "Start" -> navigate to detail fragment manually
     @Override
     public void onWorkoutClicked(Workout workout) {
+        // Create the details fragment and pass the workout ID via arguments
+        WorkoutDetails detailsFragment = new WorkoutDetails();
         Bundle bundle = new Bundle();
         bundle.putString("workoutId", workout.getWorkoutId());
-        // Make sure you have a nav action from WorkoutsFragment to workoutDetailsFragment
-        Navigation.findNavController(requireView()).navigate(R.id.action_workoutsFragment_to_workoutDetailsFragment, bundle);
+        detailsFragment.setArguments(bundle);
+
+        // Replace the current fragment with WorkoutDetailsFragment and add to back stack for back navigation
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, detailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

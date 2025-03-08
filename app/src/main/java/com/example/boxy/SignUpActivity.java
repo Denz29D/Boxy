@@ -13,7 +13,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
@@ -98,10 +97,8 @@ public class SignUpActivity extends AppCompatActivity {
                         userData.put("uid", uid);
                         userData.put("fullName", fullName);
                         userData.put("email", email);
-                        // Add any additional fields as needed.
                         userData.put("createdAt", FieldValue.serverTimestamp());
                         userData.put("updatedAt", FieldValue.serverTimestamp());
-                        // For example, initialize an empty list of favorite workouts.
                         userData.put("favoriteWorkouts", new ArrayList<String>());
 
                         // Store user data in Firestore under the "users" collection.
@@ -122,11 +119,10 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    // Navigate to MainActivity (HomeFragment).
+    // Navigate to MainActivity.
     private void navigateToHome() {
         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-        intent.putExtra("navigateTo", "home");
         startActivity(intent);
-        finish();
+        finish(); // Close SignUpActivity so the user can't go back to it
     }
 }

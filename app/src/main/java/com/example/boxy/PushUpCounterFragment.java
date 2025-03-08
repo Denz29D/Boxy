@@ -8,11 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class PushUpCounterFragment extends Fragment implements SensorEventListener {
@@ -28,8 +27,9 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
     private static final long MIN_TIME_BETWEEN_PUSHUPS = 1000; // 1 second debounce
     private long lastPushUpTime = 0;
 
-    // UI reference
+    // UI references
     private TextView tvPushUpCount;
+    private Button btnBack; // Added back button for manual navigation
 
     public PushUpCounterFragment() {
         // Required empty public constructor
@@ -42,11 +42,19 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
         tvPushUpCount = view.findViewById(R.id.tv_pushup_count);
         tvPushUpCount.setText("Push-ups: " + pushUpCount);
 
+        // Initialize and set up the back button
+        btnBack = view.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> {
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
+
         sensorManager = (SensorManager) requireActivity().getSystemService(android.content.Context.SENSOR_SERVICE);
         if (sensorManager != null) {
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         } else {
-            Toast.makeText(getContext(), "Sensor Manager not available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Sensor Manager not available", Toast.LENGTH_SHORT).show();
         }
         return view;
     }
@@ -54,7 +62,7 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
     @Override
     public void onResume() {
         super.onResume();
-        if (accelerometer != null) {
+        if (sensorManager != null && accelerometer != null) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
@@ -62,35 +70,37 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
     @Override
     public void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Use the z-axis for vertical movement detection
+        // Use the z-axis for vertical movement detection.
         float z = event.values[2];
         long currentTime = System.currentTimeMillis();
 
-        // Only count if enough time has passed to debounce
+        // Only count if enough time has passed (debounce)
         if (currentTime - lastPushUpTime > MIN_TIME_BETWEEN_PUSHUPS) {
-            // Detect downward motion
+            // Detect downward motion.
             if (!isGoingDown && (previousZ - z) > PUSH_UP_THRESHOLD) {
                 isGoingDown = true;
             }
-            // Detect upward motion after a downward motion to complete a push-up
+            // Detect upward motion after downward motion to complete a push-up.
             if (isGoingDown && (z - previousZ) > PUSH_UP_THRESHOLD) {
                 pushUpCount++;
                 isGoingDown = false;
                 lastPushUpTime = currentTime;
                 tvPushUpCount.setText("Push-ups: " + pushUpCount);
-                Toast.makeText(getContext(), "Push-up count: " + pushUpCount, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Push-up count: " + pushUpCount, Toast.LENGTH_SHORT).show();
             }
         }
         previousZ = z;
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Not used in this example.
+    public void onAccuracyChanged(android.hardware.Sensor sensor, int accuracy) {
+        // No action needed for this example.
     }
 }

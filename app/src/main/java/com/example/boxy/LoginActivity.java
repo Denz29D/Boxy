@@ -13,7 +13,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -51,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // If user is already logged in, navigate to MainActivity (HomeFragment).
+        // If user is already logged in, navigate to MainActivity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             navigateToHome();
@@ -88,9 +87,7 @@ public class LoginActivity extends AppCompatActivity {
     // Navigate to MainActivity.
     private void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        // Optional: add extra if you need to navigate to a specific fragment.
-        intent.putExtra("navigateTo", "home");
         startActivity(intent);
-        finish();
+        finish(); // Close LoginActivity so the user can't go back to it
     }
 }

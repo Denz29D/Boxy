@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton; // ✅ FIXED - Change Button to ImageButton
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private EditText etLocation;
     private Button btnSearch;
+    private ImageButton btnBack;
     private OkHttpClient httpClient = new OkHttpClient();
 
     public GymLocatorFragment() {
@@ -51,13 +53,21 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_maps, container, false);
 
-        // Get references to the search bar UI elements
+        // Get references to the UI elements
         etLocation = view.findViewById(R.id.et_location);
         btnSearch = view.findViewById(R.id.btn_search);
+        btnBack = view.findViewById(R.id.btn_back); // ✅ FIXED - Ensure it's ImageButton
 
         btnSearch.setOnClickListener(v -> searchLocation());
 
-        // Obtain the map fragment from child fragment manager
+        // Set up the back button to pop the fragment from the back stack
+        btnBack.setOnClickListener(v -> {
+            if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
+
+        // Obtain the map fragment from the child fragment manager
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -82,7 +92,6 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.clear();
-                // Query Overpass API for boxing gyms near this location
                 queryOverpassForGyms(latLng);
             } else {
                 Toast.makeText(getContext(), "Location not found", Toast.LENGTH_SHORT).show();
@@ -94,7 +103,6 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void queryOverpassForGyms(LatLng center) {
-        // Build an Overpass QL query: search for nodes tagged as gym with "boxing" in name within 5km.
         String query = "[out:json];"
                 + "node[\"amenity\"=\"gym\"][\"name\"~\"boxing\", i](around:5000,"
                 + center.latitude + "," + center.longitude + ");"
@@ -157,7 +165,6 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Set a default location until the user searches
         LatLng defaultLocation = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Default Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 10));
