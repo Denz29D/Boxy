@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -29,7 +29,7 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
 
     // UI references
     private TextView tvPushUpCount;
-    private Button btnBack; // Added back button for manual navigation
+    private ImageButton btnBack; // Updated to ImageButton to match the XML
 
     public PushUpCounterFragment() {
         // Required empty public constructor

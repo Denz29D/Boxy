@@ -31,6 +31,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Use requireContext() to ensure a non-null context.
         View view = inflater.inflate(R.layout.activity_home_acivity, container, false);
 
         View mainView = view.findViewById(R.id.main);
@@ -44,7 +45,7 @@ public class HomeFragment extends Fragment {
 
         CardView cardGymLocator = view.findViewById(R.id.card_gym_locator);
         cardGymLocator.setOnClickListener(v -> {
-            // ✅ Manual Fragment Transaction to GymLocatorFragment
+            // Manual Fragment Transaction to GymLocatorFragment
             GymLocatorFragment gymLocatorFragment = new GymLocatorFragment();
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainerView, gymLocatorFragment)
@@ -61,16 +62,17 @@ public class HomeFragment extends Fragment {
                         Video video = doc.toObject(Video.class);
                         if (video == null) continue;
 
-                        View videoCard = LayoutInflater.from(getContext())
+                        // Use requireContext() to guarantee a non-null context.
+                        View videoCard = LayoutInflater.from(requireContext())
                                 .inflate(R.layout.item_video_card, videoContainer, false);
 
                         ImageView thumbnail = videoCard.findViewById(R.id.iv_video_thumbnail);
                         TextView title = videoCard.findViewById(R.id.tv_video_title);
-                        Glide.with(getContext()).load(video.getThumbnailUrl()).into(thumbnail);
+                        Glide.with(requireContext()).load(video.getThumbnailUrl()).into(thumbnail);
                         title.setText(video.getTitle());
 
                         videoCard.setOnClickListener(v -> {
-                            Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
+                            Intent intent = new Intent(requireContext(), VideoPlayerActivity.class);
                             intent.putExtra("videoId", video.getVideoId());
                             startActivity(intent);
                         });
@@ -82,7 +84,7 @@ public class HomeFragment extends Fragment {
         // Fix for the Push-up Counter Navigation
         Button btnPushUpCounter = view.findViewById(R.id.btn_pushup_counter);
         btnPushUpCounter.setOnClickListener(v -> {
-            //  Manual Fragment Transaction to PushUpCounterFragment
+            // Manual Fragment Transaction to PushUpCounterFragment
             PushUpCounterFragment pushUpCounterFragment = new PushUpCounterFragment();
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainerView, pushUpCounterFragment)

@@ -10,18 +10,17 @@ public class Workout {
     private String duration;
     private String difficulty;
     private int calories;
-    private String imageUrl;
 
-    // New field for YouTube video
+    // Use imageUrl from Firestore
+    private String imageUrl; // e.g., "agility.jpg"
+
     private String videoId;
 
     @ServerTimestamp
     private Date createdAt;
 
-    // No-arg constructor required for Firestore
     public Workout() { }
 
-    // Optional: Overloaded constructor if you want to set videoId too
     public Workout(String workoutId, String title, String description, String duration,
                    String difficulty, int calories, String imageUrl, String videoId) {
         this.workoutId = workoutId;
@@ -30,11 +29,11 @@ public class Workout {
         this.duration = duration;
         this.difficulty = difficulty;
         this.calories = calories;
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl;    // local drawable name + extension
         this.videoId = videoId;
     }
 
-    // Getters and setters
+    // Getters & setters
     public String getWorkoutId() { return workoutId; }
     public void setWorkoutId(String workoutId) { this.workoutId = workoutId; }
 
@@ -53,6 +52,7 @@ public class Workout {
     public int getCalories() { return calories; }
     public void setCalories(int calories) { this.calories = calories; }
 
+    // IMPORTANT: Make sure your Firestore doc field is also named "imageUrl"
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
