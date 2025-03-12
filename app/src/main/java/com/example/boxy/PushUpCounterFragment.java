@@ -8,11 +8,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PushUpCounterFragment extends Fragment implements SensorEventListener {
 
@@ -29,7 +40,11 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
 
     // UI references
     private TextView tvPushUpCount;
-    private ImageButton btnBack; // Updated to ImageButton to match the XML
+    private ImageButton btnBack;
+    private Button btnStart, btnStop, btnReset, btnSave;
+
+    // State flag for counting
+    private boolean isCounting = false;
 
     public PushUpCounterFragment() {
         // Required empty public constructor
@@ -42,13 +57,24 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
         tvPushUpCount = view.findViewById(R.id.tv_pushup_count);
         tvPushUpCount.setText("Push-ups: " + pushUpCount);
 
-        // Initialize and set up the back button
+        // Initialize back button
         btnBack = view.findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
             }
         });
+
+        // Initialize control buttons
+        btnStart = view.findViewById(R.id.btn_start);
+        btnStop = view.findViewById(R.id.btn_stop);
+        btnReset = view.findViewById(R.id.btn_reset);
+        btnSave = view.findViewById(R.id.btn_save);
+
+        btnStart.setOnClickListener(v -> startCounting());
+        btnStop.setOnClickListener(v -> stopCounting());
+        btnReset.setOnClickListener(v -> resetCounter());
+        btnSave.setOnClickListener(v -> savePushupData());
 
         sensorManager = (SensorManager) requireActivity().getSystemService(android.content.Context.SENSOR_SERVICE);
         if (sensorManager != null) {
@@ -62,7 +88,8 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
     @Override
     public void onResume() {
         super.onResume();
-        if (sensorManager != null && accelerometer != null) {
+        // Only register sensor if counting is active.
+        if (isCounting && sensorManager != null && accelerometer != null) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
@@ -70,6 +97,7 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
     @Override
     public void onPause() {
         super.onPause();
+        // Unregister sensor when the fragment is paused
         if (sensorManager != null) {
             sensorManager.unregisterListener(this);
         }
@@ -77,7 +105,9 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Use the z-axis for vertical movement detection.
+        // Only process sensor data if counting is active.
+        if (!isCounting) return;
+
         float z = event.values[2];
         long currentTime = System.currentTimeMillis();
 
@@ -100,7 +130,61 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
     }
 
     @Override
-    public void onAccuracyChanged(android.hardware.Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(@NonNull android.hardware.Sensor sensor, int accuracy) {
         // No action needed for this example.
+    }
+
+    private void startCounting() {
+        if (!isCounting) {
+            isCounting = true;
+            // Register sensor listener if not already registered.
+            if (sensorManager != null && accelerometer != null) {
+                sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+            }
+            Toast.makeText(requireContext(), "Push-up counter started", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopCounting() {
+        if (isCounting) {
+            isCounting = false;
+            if (sensorManager != null) {
+                sensorManager.unregisterListener(this);
+            }
+            Toast.makeText(requireContext(), "Push-up counter stopped", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void resetCounter() {
+        pushUpCount = 0;
+        tvPushUpCount.setText("Push-ups: " + pushUpCount);
+        Toast.makeText(requireContext(), "Push-up counter reset", Toast.LENGTH_SHORT).show();
+    }
+
+    private void savePushupData() {
+        // Get the currently signed-in user
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            // Create a map with the data you want to save
+            Map<String, Object> data = new HashMap<>();
+            data.put("pushUpCount", pushUpCount);
+            data.put("date", new Timestamp(new Date()));
+
+            // Save data in a subcollection (e.g., "pushup_records") under the user's document
+            db.collection("users")
+                    .document(user.getUid())
+                    .collection("pushup_records")
+                    .add(data)
+                    .addOnSuccessListener(documentReference -> {
+                        Toast.makeText(requireContext(), "Push-up data saved successfully!", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), "Error saving data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(requireContext(), "No signed-in user", Toast.LENGTH_SHORT).show();
+        }
     }
 }

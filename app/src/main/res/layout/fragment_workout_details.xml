@@ -58,8 +58,7 @@
                 android:contentDescription="@string/workout_image"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_workouts"
-                android:background="@color/gray_light"
-                app:tint="@color/primary" />
+                android:background="@color/gray_light" />
 
             <!-- YouTube Player View -->
             <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -68,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 
-            <!-- Workout Stats -->
+            <!-- Workout Stats Card -->
             <androidx.cardview.widget.CardView
                 style="@style/CardView.App"
                 android:layout_width="match_parent"
@@ -162,10 +161,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="This high-intensity interval training workout combines boxing techniques with cardio exercises to help you burn calories and improve your boxing skills."
+                android:text="This high-intensity interval training workout combines boxing techniques with cardio exercises..."
                 android:textAppearance="@style/TextAppearance.App.Body1" />
 
-            <!-- Exercises Section -->
+            <!-- Exercises Section (Optional) -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,7 +203,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/start_workout" />
+            android:text="Mark as complete" />
 
     </LinearLayout>
 

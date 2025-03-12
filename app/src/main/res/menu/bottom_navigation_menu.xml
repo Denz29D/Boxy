@@ -11,11 +11,6 @@
         android:title="@string/workouts" />
 
     <item
-        android:id="@+id/nav_discover"
-        android:icon="@drawable/ic_discover"
-        android:title="@string/discover" />
-
-    <item
         android:id="@+id/nav_stats"
         android:icon="@drawable/ic_stats"
         android:title="@string/stats" />

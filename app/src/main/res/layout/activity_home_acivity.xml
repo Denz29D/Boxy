@@ -2,10 +2,9 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/main"
-    android:layout_height="match_parent"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,15 +12,32 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tv_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/welcome"
-            android:textAppearance="@style/TextAppearance.App.Headline1"
-            android:textStyle="bold" />
+        <!-- Header with Welcome Text and Profile Icon -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="16dp"
+                android:text="@string/welcome"
+                android:textAppearance="@style/TextAppearance.App.Headline1"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_profile"
+                android:contentDescription="@string/profile" />
+        </RelativeLayout>
+
+        <!-- This TextView is dynamically set to the user's name -->
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
@@ -29,6 +45,15 @@
             android:layout_marginTop="4dp"
             android:text="John Doe"
             android:textAppearance="@style/TextAppearance.App.Subtitle1" />
+
+        <!-- Push-Up Counter Button -->
+        <Button
+            android:id="@+id/btn_pushup_counter"
+            style="@style/Button.App.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Push-Up Counter" />
 
         <!-- Health Stats Card -->
         <androidx.cardview.widget.CardView
@@ -40,7 +65,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -158,13 +184,12 @@
             android:layout_marginTop="16dp"
             android:scrollbars="none">
 
-            <!-- Updated: Add an ID to the container for dynamic content -->
             <LinearLayout
                 android:id="@+id/video_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <!-- Video cards will be added dynamically here -->
+                <!-- Video cards added dynamically -->
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -217,7 +242,9 @@
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginStart="8dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -244,20 +271,5 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <!-- Start Workout Button -->
-        <Button
-            android:id="@+id/btn_start_workout"
-            style="@style/Button.App.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/start_workout" />
-        <Button
-            android:id="@+id/btn_pushup_counter"
-            style="@style/Button.App.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Push-Up Counter" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

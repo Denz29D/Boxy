@@ -5,14 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.boxy.adapters.WorkoutAdapter;
 import com.example.boxy.models.Workout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +49,15 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     workoutList.clear();
-                    queryDocumentSnapshots.getDocuments().forEach(doc -> {
+                    queryDocumentSnapshots.forEach(doc -> {
+                        // Convert the Firestore doc into a Workout object
                         Workout workout = doc.toObject(Workout.class);
-                        workoutList.add(workout);
+                        if (workout != null) {
+                            // Explicitly set the doc ID as the workoutId
+                            // so it's never null when we navigate to details.
+                            workout.setWorkoutId(doc.getId());
+                            workoutList.add(workout);
+                        }
                     });
                     adapter.notifyDataSetChanged();
                 })
@@ -77,16 +86,16 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 );
     }
 
-    // 2) Called when user taps "Start" -> navigate to detail fragment manually
+    // 2) Called when user taps "Start" -> navigate to WorkoutDetails manually
     @Override
     public void onWorkoutClicked(Workout workout) {
-        // Create the details fragment and pass the workout ID via arguments
+        // Create the details fragment and pass the doc ID via arguments
         WorkoutDetails detailsFragment = new WorkoutDetails();
         Bundle bundle = new Bundle();
         bundle.putString("workoutId", workout.getWorkoutId());
         detailsFragment.setArguments(bundle);
 
-        // Replace the current fragment with WorkoutDetailsFragment and add to back stack for back navigation
+        // Replace the current fragment with WorkoutDetails and add to back stack
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainerView, detailsFragment)
                 .addToBackStack(null)

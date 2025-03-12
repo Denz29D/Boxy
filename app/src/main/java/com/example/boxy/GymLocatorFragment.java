@@ -5,13 +5,14 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log; // For debug logging
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,9 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
     private EditText etLocation;
     private Button btnSearch;
     private ImageButton btnBack;
+    private TextView tvSearchingArea;
+
+    private static final String TAG = "GymLocatorFragment";
 
     // Increase timeouts to reduce network-related failures.
     private OkHttpClient httpClient = new OkHttpClient.Builder()
@@ -51,7 +55,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
 
-    // Replace with your Foursquare API Key (obtained from https://developer.foursquare.com/)
+    // Replace with your Foursquare API Key
     private static final String FOURSQUARE_API_KEY = "fsq3iWXvcBQCaEABFX20iDu7iSRtKLbwfsj1koSdKImoYqI=";
 
     public GymLocatorFragment() {
@@ -67,10 +71,12 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
         etLocation = view.findViewById(R.id.et_location);
         btnSearch = view.findViewById(R.id.btn_search);
         btnBack = view.findViewById(R.id.btn_back);
+        tvSearchingArea = view.findViewById(R.id.tv_searching_area);
 
+        // Search for location
         btnSearch.setOnClickListener(v -> searchLocation());
 
-        // Set up the back button to pop the fragment from the back stack.
+        // Back button
         btnBack.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
@@ -90,36 +96,40 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void searchLocation() {
-        String location = etLocation.getText().toString();
+        String location = etLocation.getText().toString().trim();
         if (location.isEmpty()) {
             Toast.makeText(getContext(), "Please enter a location or postcode", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Show "Searching for gyms in {location}"
+        tvSearchingArea.setText("Searching for gyms in " + location + "...");
+        tvSearchingArea.setVisibility(View.VISIBLE);
+
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
             List<Address> addressList = geocoder.getFromLocationName(location, 1);
             if (addressList != null && !addressList.isEmpty()) {
                 Address address = addressList.get(0);
-                Log.d("GymLocator", "Geocoder lat: " + address.getLatitude() +
-                        ", lon: " + address.getLongitude());
+                Log.d(TAG, "Geocoder lat: " + address.getLatitude() + ", lon: " + address.getLongitude());
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.clear();
                 // Add a test marker to verify marker functionality.
-                mMap.addMarker(new MarkerOptions().position(latLng).title("Test Marker"));
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Searched Location"));
                 queryFoursquareGyms(latLng);
             } else {
                 Toast.makeText(getContext(), "Location not found", Toast.LENGTH_SHORT).show();
+                tvSearchingArea.setText("No results for " + location);
             }
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            tvSearchingArea.setText("Error searching for " + location);
         }
     }
 
     private void queryFoursquareGyms(LatLng center) {
-        // Foursquare search endpoint: using "gym" as the query.
-        // You can also filter by gym chain name in the query parameter if needed.
         String url = "https://api.foursquare.com/v3/places/search?query=gym" +
                 "&ll=" + center.latitude + "," + center.longitude +
                 "&radius=20000&limit=50";
@@ -143,7 +153,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String jsonResponse = response.body().string();
-                    Log.d("FoursquareResponse", "Response: " + jsonResponse);
+                    Log.d(TAG, "Foursquare response: " + jsonResponse);
                     parseFoursquareResponse(jsonResponse);
                 } else {
                     new Handler(Looper.getMainLooper()).post(() ->
@@ -166,7 +176,6 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject result = results.getJSONObject(i);
-                // Foursquare returns geocodes under "geocodes.main"
                 JSONObject geocodes = result.getJSONObject("geocodes");
                 JSONObject mainGeo = geocodes.getJSONObject("main");
                 double lat = mainGeo.getDouble("latitude");
