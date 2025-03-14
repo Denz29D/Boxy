@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter Leaderboard"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time Period"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp" />
+
+    <RadioGroup
+        android:id="@+id/rg_time_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/rb_all_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="All Time"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rb_this_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This Month" />
+
+        <RadioButton
+            android:id="@+id/rb_this_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This Week" />
+
+        <RadioButton
+            android:id="@+id/rb_today"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Today" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="16dp" />
+
+    <RadioGroup
+        android:id="@+id/rg_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/rb_overall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Overall"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rb_pushups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Push-ups" />
+
+        <RadioButton
+            android:id="@+id/rb_workouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Workouts" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/Button.App.Text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/btn_apply"
+            style="@style/Button.App.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Apply" />
+    </LinearLayout>
+</LinearLayout>
+

@@ -12,7 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,8 +24,12 @@ import java.util.List;
 public class StatsFragment extends Fragment {
 
     private static final String TAG = "StatsFragment";
+
+    // UI references
     private TextView tvTotalPushups, tvPushupRecord, tvTotalWorkouts;
     private ImageButton btnBack;
+    private MaterialButton btnTimeFilter;
+    private TabLayout tabLayout;
 
     public StatsFragment() {
         // Required empty public constructor
@@ -33,18 +38,53 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the fragment layout (assumed to be fragment_stats.xml)
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
+
+        // Bind views from the layout
+        btnBack = view.findViewById(R.id.btn_back);
         tvTotalPushups = view.findViewById(R.id.tv_total_pushups);
         tvPushupRecord = view.findViewById(R.id.tv_pushup_record);
         tvTotalWorkouts = view.findViewById(R.id.tv_total_workouts);
-        btnBack = view.findViewById(R.id.btn_back);
+        btnTimeFilter = view.findViewById(R.id.btn_time_filter);
+        tabLayout = view.findViewById(R.id.tab_layout);
 
+        // Set up back button click listener
         btnBack.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
+            } else {
+                requireActivity().onBackPressed();
             }
         });
 
+        // Optional: Set up time filter button click listener
+        btnTimeFilter.setOnClickListener(v ->
+                Toast.makeText(requireContext(), "Time filter clicked", Toast.LENGTH_SHORT).show()
+        );
+
+        // Optional: Listen for TabLayout selection changes
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // Handle tab selection changes as needed.
+                int position = tab.getPosition();
+                Log.d(TAG, "Selected tab position: " + position);
+                // TODO: Update UI based on selected tab.
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // No action required here.
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // No action required here.
+            }
+        });
+
+        // Load statistics data from Firebase
         loadPushupStats();
         loadPushupRecord();
         loadWorkoutStats();
@@ -52,7 +92,7 @@ public class StatsFragment extends Fragment {
         return view;
     }
 
-    // Sums up all push-ups in the pushup_records subcollection
+    // Loads and sums all push-up counts from the pushup_records subcollection
     private void loadPushupStats() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -83,7 +123,7 @@ public class StatsFragment extends Fragment {
                 });
     }
 
-    // Finds the maximum pushUpCount value from pushup_records
+    // Loads the highest push-up count from the pushup_records subcollection
     private void loadPushupRecord() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -114,7 +154,7 @@ public class StatsFragment extends Fragment {
                 });
     }
 
-    // Loads the count of completed workouts
+    // Loads the count of completed workouts from the completedWorkouts collection
     private void loadWorkoutStats() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {

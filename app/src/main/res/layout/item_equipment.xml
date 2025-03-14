@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_equipment"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:padding="12dp"
+        android:background="@drawable/circle_background"
+        android:src="@drawable/ic_boxing_gloves"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_equipment_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="boxing gloves"
+        android:textAppearance="@style/TextAppearance.App.Caption"
+        android:textAlignment="center" />
+</LinearLayout>
+
