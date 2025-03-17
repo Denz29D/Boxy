@@ -15,26 +15,30 @@ import com.example.boxy.R;
 
 import java.util.List;
 
-/**
- * Displays a leaderboard of users. Supports three metric types:
- *  0 = Overall (push-ups + workouts)
- *  1 = Push-ups only
- *  2 = Workouts only
+/*
+ * Displays a leaderboard of users.
+ * Supports three metric types:
+ *   0 = Overall (push-ups + workouts)
+ *   1 = Push-ups only
+ *   2 = Workouts only
  */
 public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapter.ViewHolder> {
 
+    // Context for inflating layouts.
     private final Context context;
+    // List of users to be displayed on the leaderboard.
     private final List<LeaderboardUser> leaderboardList;
-    // Default metric type is Overall
+    // Default metric type is Overall.
     private int metricType = 0;
 
+    // Constructor to initialise context and leaderboard list.
     public LeaderboardsAdapter(Context context, List<LeaderboardUser> leaderboardList) {
         this.context = context;
         this.leaderboardList = leaderboardList;
     }
 
     /**
-     * Updates the metric type and refreshes the list.
+     * Updates the metric type and refreshes the leaderboard.
      * @param metricType 0 = Overall, 1 = Push-ups, 2 = Workouts
      */
     public void setMetricType(int metricType) {
@@ -49,6 +53,7 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     @NonNull
     @Override
     public LeaderboardsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the leaderboard item layout.
         View view = LayoutInflater.from(context).inflate(R.layout.item_leaderboard, parent, false);
         return new ViewHolder(view);
     }
@@ -57,10 +62,10 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     public void onBindViewHolder(@NonNull LeaderboardsAdapter.ViewHolder holder, int position) {
         LeaderboardUser user = leaderboardList.get(position);
 
-        // Rank is based on the sorted position (1-indexed)
+        // Rank is based on the sorted position (1-indexed).
         holder.tvRank.setText(String.valueOf(position + 1));
 
-        // Show medal icons for the top three positions (customize icons as needed)
+        // Display medal icons for the top three positions.
         if (position == 0) {
             holder.ivMedal.setVisibility(View.VISIBLE);
             // Optionally: holder.ivMedal.setImageResource(R.drawable.ic_gold_medal);
@@ -74,18 +79,18 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
             holder.ivMedal.setVisibility(View.GONE);
         }
 
-        // Set user info
+        // Set the full name of the user.
         holder.tvFullName.setText(user.fullName);
-        // Example static user level; update if you have dynamic level data
+        // Display a static user level (update if dynamic level data is available).
         holder.tvUserLevel.setText("Level 5");
 
-        // Calculate and display the score based on metric type
+        // Calculate and display the score based on the selected metric.
         int score;
         if (metricType == 0) { // Overall
             score = user.pushupRecord + user.workoutsCompleted;
-        } else if (metricType == 1) { // Push-ups
+        } else if (metricType == 1) { // Push-ups only
             score = user.pushupRecord;
-        } else { // Workouts (metricType == 2)
+        } else { // Workouts only (metricType == 2)
             score = user.workoutsCompleted;
         }
         holder.tvScore.setText(String.valueOf(score));
@@ -96,6 +101,7 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
         return leaderboardList.size();
     }
 
+    // ViewHolder class to hold references to UI components for each leaderboard item.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvRank, tvFullName, tvUserLevel, tvScore;
         ImageView ivMedal;

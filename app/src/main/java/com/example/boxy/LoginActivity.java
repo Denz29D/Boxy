@@ -16,6 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/*
+ * Activity for handling user login.
+ * The app uses Firebase Authentication to sign in users via email and password.
+ * Edge-to-edge display is enabled using WindowInsets for proper padding.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     // FirebaseAuth instance for authentication operations.
@@ -25,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Enable edge-to-edge display.
+        // Enable edge-to-edge display by applying system insets.
         setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -33,14 +38,14 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize FirebaseAuth.
+        // Initialise FirebaseAuth.
         mAuth = FirebaseAuth.getInstance();
 
-        // Set up the login button.
+        // Set up the login button click listener.
         Button loginButton = findViewById(R.id.btn_login);
         loginButton.setOnClickListener(v -> signInUser());
 
-        // Set up the sign-up text view click to switch to SignUpActivity.
+        // Set up sign-up link to navigate to SignUpActivity.
         TextView signUpLink = findViewById(R.id.tv_signup);
         signUpLink.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
@@ -50,27 +55,28 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // If user is already logged in, navigate to MainActivity.
+        // If a user is already signed in, navigate directly to MainActivity.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             navigateToHome();
         }
     }
 
-    // Sign-in user using email and password.
+    // Signs in the user using the provided email and password.
     private void signInUser() {
-        // Retrieve email and password from the input fields.
+        // Retrieve user input from EditText fields.
         EditText emailEditText = findViewById(R.id.et_email);
         EditText passwordEditText = findViewById(R.id.et_password);
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
+        // Validate that both email and password are entered.
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Please enter both email and password.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Sign in using Firebase Authentication.
+        // Attempt to sign in with Firebase Authentication.
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -84,10 +90,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    // Navigate to MainActivity.
+    // Navigates to the home screen (MainActivity) and finishes this activity.
     private void navigateToHome() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
-        finish(); // Close LoginActivity so the user can't go back to it
+        finish(); // Close LoginActivity to prevent navigating back to it.
     }
 }

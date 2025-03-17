@@ -29,7 +29,7 @@ public class Workout {
         this.duration = duration;
         this.difficulty = difficulty;
         this.calories = calories;
-        this.imageUrl = imageUrl;    // local drawable name + extension
+        this.imageUrl = imageUrl;
         this.videoId = videoId;
     }
 

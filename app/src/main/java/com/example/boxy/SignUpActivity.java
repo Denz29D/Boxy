@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * Activity for signing up new users.
+ * The app uses Firebase Authentication to create an account and Firestore to store user details.
+ * Edge-to-edge display is enabled by applying window insets.
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     // FirebaseAuth instance for user sign-up operations.
@@ -33,22 +38,24 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set the layout for the sign-up activity.
         setContentView(R.layout.activity_sign_up);
+        // Apply window insets to enable edge-to-edge display.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Initialize FirebaseAuth and Firestore.
+        // Initialize Firebase Authentication and Firestore instances.
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        // Set up the sign-up button.
+        // Set up the sign-up button click listener.
         Button signUpButton = findViewById(R.id.btn_signup);
         signUpButton.setOnClickListener(v -> signupButtonClicked());
 
-        // Set up the login link to switch back to LoginActivity.
+        // Set up the login link to navigate to LoginActivity.
         TextView loginLink = findViewById(R.id.tv_login);
         loginLink.setOnClickListener(v -> {
             startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
@@ -57,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     // Triggered when the sign-up button is clicked.
     private void signupButtonClicked() {
-        // Retrieve user inputs.
+        // Retrieve user input values.
         EditText nameEditText = findViewById(R.id.et_name);
         EditText emailEditText = findViewById(R.id.et_email);
         EditText passwordEditText = findViewById(R.id.et_password);
@@ -68,21 +75,23 @@ public class SignUpActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
+        // Validate that all fields are filled.
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(SignUpActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Ensure the password and confirmation match.
         if (!password.equals(confirmPassword)) {
             Toast.makeText(SignUpActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Proceed with sign-up.
+        // Proceed with sign-up using Firebase Authentication.
         signup(email, password, fullName);
     }
 
-    // Sign up a new user using Firebase Authentication and store user data in Firestore.
+    // Signs up a new user and stores their data in Firestore.
     private void signup(String email, String password, String fullName) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
@@ -91,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(SignUpActivity.this, "Sign up successful. Redirecting...", Toast.LENGTH_SHORT).show();
 
-                        // Prepare user data.
+                        // Prepare a map of user data to store.
                         String uid = user.getUid();
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("uid", uid);
@@ -101,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity {
                         userData.put("updatedAt", FieldValue.serverTimestamp());
                         userData.put("favoriteWorkouts", new ArrayList<String>());
 
-                        // Store user data in Firestore under the "users" collection.
+                        // Store user data in the "users" collection under the user's UID.
                         db.collection("users").document(uid)
                                 .set(userData)
                                 .addOnSuccessListener(aVoid -> {
@@ -119,10 +128,10 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    // Navigate to MainActivity.
+    // Navigates to MainActivity after successful sign-up.
     private void navigateToHome() {
         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
         startActivity(intent);
-        finish(); // Close SignUpActivity so the user can't go back to it
+        finish(); // Finish SignUpActivity to prevent returning to it.
     }
 }

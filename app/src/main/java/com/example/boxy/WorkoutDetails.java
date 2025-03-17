@@ -29,35 +29,44 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * Displays workout details retrieved from Firestore.
+ */
 public class WorkoutDetails extends Fragment {
 
+    // Tag used for logging.
     private static final String TAG = "WorkoutDetails";
 
+    // Holds the ID of the workout in Firestore.
     private String workoutId;
+    // Holds the loaded workout data.
     private Workout currentWorkout;
 
-    // UI references
+    // Fields referencing UI components.
     private TextView tvWorkoutTitle, tvWorkoutDescription, tvDuration, tvDifficulty, tvCalories, tvFullDescription;
     private ImageView ivWorkout;
     private Button btnStartWorkout;
     private ImageButton btnBack;
     private YouTubePlayerView youtubePlayerView;
 
-    public WorkoutDetails() {
-        // Required empty public constructor
-    }
+    /*
+     * Required empty constructor.
+     */
+    public WorkoutDetails() { }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Inflate the layout holding the workout details.
         View view = inflater.inflate(R.layout.fragment_workout_details, container, false);
 
+        // Retrieve the workout ID from fragment arguments.
         if (getArguments() != null) {
             workoutId = getArguments().getString("workoutId", "");
         }
 
-        // Initialize UI elements
+        // Reference UI elements.
         tvWorkoutTitle = view.findViewById(R.id.tv_workout_title);
         tvWorkoutDescription = view.findViewById(R.id.tv_workout_description);
         tvDuration = view.findViewById(R.id.tv_duration);
@@ -69,16 +78,16 @@ public class WorkoutDetails extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         youtubePlayerView = view.findViewById(R.id.youtube_player_view);
 
-        // Ensure the YouTube player lifecycle is observed
+        // Add lifecycle observation for the YouTube player.
         getLifecycle().addObserver(youtubePlayerView);
 
-        // Load workout details from Firestore
+        // Load workout details from Firestore.
         loadWorkoutDetails();
 
-        // Mark workout complete
+        // Button for marking the workout as complete.
         btnStartWorkout.setOnClickListener(v -> markWorkoutComplete());
 
-        // Back button navigation
+        // Button for returning to the previous screen.
         btnBack.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
@@ -88,6 +97,9 @@ public class WorkoutDetails extends Fragment {
         return view;
     }
 
+    /*
+     * Loads the details of the workout from Firestore using the stored workout ID.
+     */
     private void loadWorkoutDetails() {
         if (TextUtils.isEmpty(workoutId)) {
             Toast.makeText(requireContext(), "No workout ID provided", Toast.LENGTH_SHORT).show();
@@ -99,10 +111,12 @@ public class WorkoutDetails extends Fragment {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
+                        // Convert Firestore document to a Workout object.
                         currentWorkout = documentSnapshot.toObject(Workout.class);
                         if (currentWorkout != null) {
-                            // Optionally set the ID again to keep it consistent:
+                            // Optionally keep ID consistent.
                             currentWorkout.setWorkoutId(documentSnapshot.getId());
+                            // Populate the fragment UI with the workout data.
                             populateUI(currentWorkout);
                             Toast.makeText(requireContext(), "Workout details loaded", Toast.LENGTH_SHORT).show();
                         }
@@ -118,8 +132,14 @@ public class WorkoutDetails extends Fragment {
                 });
     }
 
+    /*
+     * Populates the UI elements with the workout data.
+     * Loads images and video if available.
+     */
     private void populateUI(Workout workout) {
+        // Set basic fields.
         tvWorkoutTitle.setText(workout.getTitle());
+        // Construct a short description combining duration, difficulty, and calories.
         String shortDesc = workout.getDuration() + " • " + workout.getDifficulty() + " • " + workout.getCalories() + " calories";
         tvWorkoutDescription.setText(shortDesc);
 
@@ -128,27 +148,26 @@ public class WorkoutDetails extends Fragment {
         tvCalories.setText(String.valueOf(workout.getCalories()));
         tvFullDescription.setText(workout.getDescription());
 
-        // Load the image using Glide. If imageUrl is a local drawable name (e.g., "hiit_workout.jpg"),
-        // strip the extension and find the resource ID. Then resize with .override() to avoid large images.
+        // Attempt to load an image using Glide.
         String imageUrl = workout.getImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {
             if (!imageUrl.startsWith("http")) {
-                // e.g. "hiit_workout.jpg" -> resourceName = "hiit_workout"
+                // Attempt to load from drawable resources if not an HTTP URL.
                 int dotIndex = imageUrl.lastIndexOf('.');
                 String resourceName = (dotIndex > 0) ? imageUrl.substring(0, dotIndex) : imageUrl;
                 int resId = getResources().getIdentifier(resourceName, "drawable", requireContext().getPackageName());
                 if (resId != 0) {
                     Glide.with(this)
                             .load(resId)
-                            .override(600, 600)  // Resize the image
-                            .centerCrop()        // Crop to fill
+                            .override(600, 600)
+                            .centerCrop()
                             .into(ivWorkout);
                 } else {
                     Log.d(TAG, "Drawable resource not found for: " + resourceName);
                     Toast.makeText(requireContext(), "Image resource not found for " + resourceName, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                // Image URL is an actual URL, so load it directly (also resizing).
+                // Load from a remote URL.
                 Glide.with(this)
                         .load(imageUrl)
                         .override(600, 600)
@@ -157,7 +176,7 @@ public class WorkoutDetails extends Fragment {
             }
         }
 
-        // Setup YouTube video if available
+        // If a video ID is present, prepare the YouTube player.
         if (!TextUtils.isEmpty(workout.getVideoId())) {
             youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
                 @Override
@@ -170,12 +189,17 @@ public class WorkoutDetails extends Fragment {
         }
     }
 
+    /*
+     * Marks the current workout as completed for the signed-in user.
+     * Saves the completion record in Firestore under a 'completedWorkouts' subcollection.
+     */
     private void markWorkoutComplete() {
         if (currentWorkout == null) {
             Log.d(TAG, "Current workout is null, cannot mark complete.");
             Toast.makeText(requireContext(), "No workout loaded to mark complete.", Toast.LENGTH_SHORT).show();
             return;
         }
+
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId == null) {
             Log.d(TAG, "User not signed in.");
@@ -184,13 +208,13 @@ public class WorkoutDetails extends Fragment {
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // Ensure the user document exists by merging an empty map.
+        // Merge an empty map to ensure the user document exists.
         db.collection("users").document(userId).set(new HashMap<>(), SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "User document ensured.");
                     Toast.makeText(requireContext(), "User doc ensured, now marking workout complete...", Toast.LENGTH_SHORT).show();
 
-                    // Now add the subcollection document.
+                    // Create the subcollection document data.
                     Map<String, Object> data = new HashMap<>();
                     data.put("workoutId", currentWorkout.getWorkoutId());
                     data.put("completedAt", FieldValue.serverTimestamp());

@@ -187,7 +187,7 @@ public class LeaderboardsFragment extends Fragment {
                         loadUserStats(user);
                     }
 
-                    // We sort/notify after each user is loaded (in loadUserStats)
+                    //  sort/notify after each user is loaded (in loadUserStats)
                     // once loadedUsersCount == totalUsersToLoad
                 })
                 .addOnFailureListener(e -> {

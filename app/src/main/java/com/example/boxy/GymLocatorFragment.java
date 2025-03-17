@@ -39,6 +39,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/*
+ * Fragment that locates gyms based on a user-provided location.
+ * The app uses a Geocoder to convert the address into coordinates, displays the area on a map,
+ * and queries the Foursquare API to mark nearby gyms.
+ */
 public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -49,41 +54,42 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "GymLocatorFragment";
 
-    // Increase timeouts to reduce network-related failures.
+    // Configure OkHttpClient with extended timeouts to reduce network failures.
     private OkHttpClient httpClient = new OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
 
-    // Replace with your Foursquare API Key
+    // Replace with the actual Foursquare API key.
     private static final String FOURSQUARE_API_KEY = "fsq3iWXvcBQCaEABFX20iDu7iSRtKLbwfsj1koSdKImoYqI=";
 
     public GymLocatorFragment() {
-        // Required empty public constructor
+        // Required empty public constructor.
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout that contains the map and search UI.
         View view = inflater.inflate(R.layout.activity_maps, container, false);
 
-        // Get references to the UI elements.
+        // Bind UI elements.
         etLocation = view.findViewById(R.id.et_location);
         btnSearch = view.findViewById(R.id.btn_search);
         btnBack = view.findViewById(R.id.btn_back);
         tvSearchingArea = view.findViewById(R.id.tv_searching_area);
 
-        // Search for location
+        // Set up the search button to initiate location search.
         btnSearch.setOnClickListener(v -> searchLocation());
 
-        // Back button
+        // Set up the back button to pop the fragment from the back stack.
         btnBack.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
             }
         });
 
-        // Obtain the map fragment from the child fragment manager.
+        // Obtain the SupportMapFragment from the child fragment manager.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -95,6 +101,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    // Called when the search button is clicked; retrieves and processes the user location.
     private void searchLocation() {
         String location = etLocation.getText().toString().trim();
         if (location.isEmpty()) {
@@ -102,10 +109,11 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
             return;
         }
 
-        // Show "Searching for gyms in {location}"
+        // Update the UI to indicate that the app is searching for gyms.
         tvSearchingArea.setText("Searching for gyms in " + location + "...");
         tvSearchingArea.setVisibility(View.VISIBLE);
 
+        // Use Geocoder to convert the location string into coordinates.
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
             List<Address> addressList = geocoder.getFromLocationName(location, 1);
@@ -113,10 +121,12 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
                 Address address = addressList.get(0);
                 Log.d(TAG, "Geocoder lat: " + address.getLatitude() + ", lon: " + address.getLongitude());
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                // Animate camera to the searched location.
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.clear();
-                // Add a test marker to verify marker functionality.
+                // Add a marker at the searched location.
                 mMap.addMarker(new MarkerOptions().position(latLng).title("Searched Location"));
+                // Query Foursquare API for gyms near the location.
                 queryFoursquareGyms(latLng);
             } else {
                 Toast.makeText(getContext(), "Location not found", Toast.LENGTH_SHORT).show();
@@ -129,6 +139,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    // Queries the Foursquare API for gyms near the given coordinates.
     private void queryFoursquareGyms(LatLng center) {
         String url = "https://api.foursquare.com/v3/places/search?query=gym" +
                 "&ll=" + center.latitude + "," + center.longitude +
@@ -166,12 +177,13 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    // Parses the Foursquare API JSON response and adds markers for each gym.
     private void parseFoursquareResponse(String jsonResponse) {
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONArray results = jsonObject.getJSONArray("results");
 
-            // Clear map markers on the main thread.
+            // Clear existing markers on the main thread.
             new Handler(Looper.getMainLooper()).post(() -> mMap.clear());
 
             for (int i = 0; i < results.length(); i++) {
@@ -200,7 +212,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Set a default location (Sydney) so that something is visible on load.
+        // Set a default location (Sydney) so that the map shows something on load.
         LatLng defaultLocation = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(defaultLocation).title("Default Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 10));

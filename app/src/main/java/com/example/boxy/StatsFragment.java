@@ -1,3 +1,7 @@
+/****************************************************************************
+ * StatsFragment.java
+ * This fragment displays overall statistics, push-up records, and workout data.
+ ****************************************************************************/
 package com.example.boxy;
 
 import android.os.Bundle;
@@ -25,23 +29,24 @@ public class StatsFragment extends Fragment {
 
     private static final String TAG = "StatsFragment";
 
-    // UI references
+    // UI references for statistics display.
     private TextView tvTotalPushups, tvPushupRecord, tvTotalWorkouts;
     private ImageButton btnBack;
     private MaterialButton btnTimeFilter;
     private TabLayout tabLayout;
 
     public StatsFragment() {
-        // Required empty public constructor
+        // Empty public constructor.
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the fragment layout (assumed to be fragment_stats.xml)
+        // Inflate the layout (assumed to be fragment_stats.xml).
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
 
-        // Bind views from the layout
+        // Bind UI components.
         btnBack = view.findViewById(R.id.btn_back);
         tvTotalPushups = view.findViewById(R.id.tv_total_pushups);
         tvPushupRecord = view.findViewById(R.id.tv_pushup_record);
@@ -49,7 +54,7 @@ public class StatsFragment extends Fragment {
         btnTimeFilter = view.findViewById(R.id.btn_time_filter);
         tabLayout = view.findViewById(R.id.tab_layout);
 
-        // Set up back button click listener
+        // Set the back button functionality.
         btnBack.setOnClickListener(v -> {
             if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                 getParentFragmentManager().popBackStack();
@@ -58,33 +63,32 @@ public class StatsFragment extends Fragment {
             }
         });
 
-        // Optional: Set up time filter button click listener
+        // Time filter button (optional).
         btnTimeFilter.setOnClickListener(v ->
                 Toast.makeText(requireContext(), "Time filter clicked", Toast.LENGTH_SHORT).show()
         );
 
-        // Optional: Listen for TabLayout selection changes
+        // Respond to tab selection changes.
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                // Handle tab selection changes as needed.
                 int position = tab.getPosition();
                 Log.d(TAG, "Selected tab position: " + position);
-                // TODO: Update UI based on selected tab.
+                // Update UI based on selected tab if needed.
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                // No action required here.
+                // No action required.
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                // No action required here.
+                // No action required.
             }
         });
 
-        // Load statistics data from Firebase
+        // Load relevant user statistics from Firebase.
         loadPushupStats();
         loadPushupRecord();
         loadWorkoutStats();
@@ -92,7 +96,9 @@ public class StatsFragment extends Fragment {
         return view;
     }
 
-    // Loads and sums all push-up counts from the pushup_records subcollection
+    /*
+     * Retrieves the sum of all push-ups from the user's pushup_records subcollection.
+     */
     private void loadPushupStats() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -118,12 +124,16 @@ public class StatsFragment extends Fragment {
                     tvTotalPushups.setText(String.valueOf(totalPushups));
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Failed to load pushup stats: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(),
+                            "Failed to load pushup stats: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Error loading pushup stats", e);
                 });
     }
 
-    // Loads the highest push-up count from the pushup_records subcollection
+    /*
+     * Retrieves the highest recorded push-up count from the pushup_records subcollection.
+     */
     private void loadPushupRecord() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -149,12 +159,16 @@ public class StatsFragment extends Fragment {
                     tvPushupRecord.setText(String.valueOf(maxPushups));
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Failed to load pushup record: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(),
+                            "Failed to load pushup record: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Error loading pushup record", e);
                 });
     }
 
-    // Loads the count of completed workouts from the completedWorkouts collection
+    /*
+     * Retrieves the count of completed workouts from the user's completedWorkouts subcollection.
+     */
     private void loadWorkoutStats() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -173,7 +187,9 @@ public class StatsFragment extends Fragment {
                     tvTotalWorkouts.setText(String.valueOf(totalWorkouts));
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Failed to load workout stats: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(),
+                            "Failed to load workout stats: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Error loading workout stats", e);
                 });
     }

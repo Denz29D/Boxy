@@ -5,18 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/*
+ * MainActivity hosts the primary fragments of the app.
+ * The app uses a BottomNavigationView to switch between Home, Workouts, Profile, and Stats fragments.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Set the main activity layout.
         setContentView(R.layout.activity_main);
 
-        // Removed toolbar setup since the toolbar has been removed from the layout.
-        // Toolbar toolbar = findViewById(R.id.toolbar);
-        // setSupportActionBar(toolbar);
-
+        // Bind the BottomNavigationView from the layout.
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        // Set up the listener to handle navigation item selection.
         bottomNav.setOnNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_home) {
@@ -25,14 +28,13 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new WorkoutsFragment());
             } else if (id == R.id.nav_profile) {
                 replaceFragment(new Profile());
-            }
-            else if (id == R.id.nav_stats) {
+            } else if (id == R.id.nav_stats) {
                 replaceFragment(new StatsFragment());
             }
             return true;
         });
 
-        // Set the default fragment.
+        // Set the default fragment to display.
         bottomNav.setSelectedItemId(R.id.nav_home);
     }
 

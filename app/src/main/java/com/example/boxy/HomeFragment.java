@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,20 +24,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+ * HomeFragment displays the home screen.
+ * The app applies window insets for proper padding, loads the current user's name,
+ * and sets up navigation to the Gym Locator, Leaderboards, and Push-Up Counter.
+ * It also dynamically loads tutorial videos from Firestore.
+ */
 public class HomeFragment extends Fragment {
 
+    // TextView to display the user's name.
     private TextView tvUserName;
 
     public HomeFragment() {
-        // Required empty constructor
+        // Required empty constructor.
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment.
         View view = inflater.inflate(R.layout.activity_home_acivity, container, false);
 
+        // Apply window insets to the main view for proper padding.
         View mainView = view.findViewById(R.id.main);
         if (mainView != null) {
             ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
@@ -48,17 +55,17 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        // Reference UI elements
+        // Reference UI elements.
         tvUserName = view.findViewById(R.id.tv_user_name);
         CardView cardGymLocator = view.findViewById(R.id.card_gym_locator);
         CardView cardLeaderboard = view.findViewById(R.id.card_leaderboard);
         Button btnPushUpCounter = view.findViewById(R.id.btn_pushup_counter);
         LinearLayout videoContainer = view.findViewById(R.id.video_container);
 
-        // 1) Load and display the currently signed-in user's name
+        // Load and display the currently signed-in user's name.
         loadUserName();
 
-        // 2) Gym Locator navigation
+        // Navigate to Gym Locator when the corresponding card is clicked.
         cardGymLocator.setOnClickListener(v -> {
             GymLocatorFragment gymLocatorFragment = new GymLocatorFragment();
             getParentFragmentManager().beginTransaction()
@@ -67,7 +74,7 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
-        // 3) Leaderboards navigation
+        // Navigate to Leaderboards when the corresponding card is clicked.
         cardLeaderboard.setOnClickListener(v -> {
             LeaderboardsFragment leaderboardsFragment = new LeaderboardsFragment();
             getParentFragmentManager().beginTransaction()
@@ -76,7 +83,7 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
-        // 4) Push-Up Counter navigation
+        // Navigate to Push-Up Counter when the corresponding button is clicked.
         btnPushUpCounter.setOnClickListener(v -> {
             PushUpCounterFragment pushUpCounterFragment = new PushUpCounterFragment();
             getParentFragmentManager().beginTransaction()
@@ -85,7 +92,7 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
-        // 5) Load tutorial videos from Firestore
+        // Load tutorial videos from Firestore and add them to the video container.
         FirebaseFirestore.getInstance().collection("videos")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -93,21 +100,25 @@ public class HomeFragment extends Fragment {
                         Video video = doc.toObject(Video.class);
                         if (video == null) continue;
 
+                        // Inflate each video card layout.
                         View videoCard = LayoutInflater.from(requireContext())
                                 .inflate(R.layout.item_video_card, videoContainer, false);
 
                         ImageView thumbnail = videoCard.findViewById(R.id.iv_video_thumbnail);
                         TextView title = videoCard.findViewById(R.id.tv_video_title);
 
+                        // Load the video thumbnail using Glide.
                         Glide.with(requireContext()).load(video.getThumbnailUrl()).into(thumbnail);
                         title.setText(video.getTitle());
 
+                        // On clicking the video card, navigate to the VideoPlayerActivity.
                         videoCard.setOnClickListener(v -> {
                             Intent intent = new Intent(requireContext(), VideoPlayerActivity.class);
                             intent.putExtra("videoId", video.getVideoId());
                             startActivity(intent);
                         });
 
+                        // Add the video card to the container.
                         videoContainer.addView(videoCard);
                     }
                 })
@@ -119,8 +130,7 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Loads the currently signed-in user's name from Firestore
-     * and sets it in the tvUserName TextView.
+     * Loads the currently signed-in user's name from Firestore and sets it to the tvUserName TextView.
      */
     private void loadUserName() {
         String userId = FirebaseAuth.getInstance().getUid();

@@ -47,5 +47,17 @@
     <color name="background_dark">#FF303030</color>
     <color name="card_background">#FFFFFFFF</color>
     <color name="divider">#FFE0E0E0</color>
+
+        <color name="background_color">#F5F5F5</color>
+        <color name="primary_text">#212121</color>
+        <color name="secondary_text">#757575</color>
+        <color name="accent_color">#4CAF50</color>
+        <color name="start_button">#4CAF50</color>
+        <color name="stop_button">#F44336</color>
+        <color name="reset_button">#FF9800</color>
+        <color name="save_button">#2196F3</color>
+
+
+
 </resources>
 
