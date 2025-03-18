@@ -147,6 +147,8 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
             if (!isGoingDown && (previousZ - z) > PUSH_UP_THRESHOLD) {
                 isGoingDown = true;
             }
+
+
             // Detect upward movement after a downward phase to complete a push-up.
             if (isGoingDown && (z - previousZ) > PUSH_UP_THRESHOLD) {
                 pushUpCount++;
