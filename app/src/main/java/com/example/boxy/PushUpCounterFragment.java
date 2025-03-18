@@ -161,7 +161,7 @@ public class PushUpCounterFragment extends Fragment implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(@NonNull Sensor sensor, int accuracy) {
-        // No additional action needed for accuracy changes in this implementation.
+        // No implementation needed for accuracy changes in this implementation.
     }
 
     // Starts the push-up counting session.

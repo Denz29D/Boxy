@@ -68,13 +68,13 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
         // Display medal icons for the top three positions.
         if (position == 0) {
             holder.ivMedal.setVisibility(View.VISIBLE);
-            // Optionally: holder.ivMedal.setImageResource(R.drawable.ic_gold_medal);
+            // Optionally have a gold medal bage for the top user.
         } else if (position == 1) {
             holder.ivMedal.setVisibility(View.VISIBLE);
-            // Optionally: holder.ivMedal.setImageResource(R.drawable.ic_silver_medal);
+            // Optionally: have a silver medal bage for the second user.
         } else if (position == 2) {
             holder.ivMedal.setVisibility(View.VISIBLE);
-            // Optionally: holder.ivMedal.setImageResource(R.drawable.ic_bronze_medal);
+            // Optionally: have a bronze medal bage for the third user.
         } else {
             holder.ivMedal.setVisibility(View.GONE);
         }

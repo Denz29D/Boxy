@@ -114,7 +114,7 @@ public class WorkoutDetails extends Fragment {
                         // Convert Firestore document to a Workout object.
                         currentWorkout = documentSnapshot.toObject(Workout.class);
                         if (currentWorkout != null) {
-                            // Optionally keep ID consistent.
+                            //  keep ID consistent.
                             currentWorkout.setWorkoutId(documentSnapshot.getId());
                             // Populate the fragment UI with the workout data.
                             populateUI(currentWorkout);

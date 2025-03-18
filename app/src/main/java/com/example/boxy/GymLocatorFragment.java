@@ -60,7 +60,7 @@ public class GymLocatorFragment extends Fragment implements OnMapReadyCallback {
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
 
-    // Replace with the actual Foursquare API key.
+    // Foursquare API key.
     private static final String FOURSQUARE_API_KEY = "fsq3iWXvcBQCaEABFX20iDu7iSRtKLbwfsj1koSdKImoYqI=";
 
     public GymLocatorFragment() {

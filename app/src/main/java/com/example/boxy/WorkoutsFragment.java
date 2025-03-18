@@ -43,7 +43,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
         loadWorkouts();
         return view;
     }
-
+    //load workouts from database
     private void loadWorkouts() {
         FirebaseFirestore.getInstance().collection("workouts")
                 .get()
@@ -53,7 +53,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                         // Convert the Firestore doc into a Workout object
                         Workout workout = doc.toObject(Workout.class);
                         if (workout != null) {
-                            // Explicitly set the doc ID as the workoutId
+                            //  set the doc ID as the workoutId
                             // so it's never null when we navigate to details.
                             workout.setWorkoutId(doc.getId());
                             workoutList.add(workout);
@@ -66,7 +66,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 );
     }
 
-    // 1) Called when user taps "Mark Complete" button
+    // 1) Called when user taps "Mark Complete" button, saves to Firestore ina subcollection
     @Override
     public void onMarkWorkoutComplete(Workout workout) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -86,7 +86,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 );
     }
 
-    // 2) Called when user taps "Start" -> navigate to WorkoutDetails manually
+    // 2) Called when user taps "Start" then navigate to WorkoutDetails manually
     @Override
     public void onWorkoutClicked(Workout workout) {
         // Create the details fragment and pass the doc ID via arguments
