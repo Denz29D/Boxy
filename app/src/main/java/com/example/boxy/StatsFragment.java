@@ -74,7 +74,7 @@ public class StatsFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 Log.d(TAG, "Selected tab position: " + position);
-                // Update UI based on selected tab if needed.
+                // Update UI based on selected tab
             }
 
             @Override
