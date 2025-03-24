@@ -52,7 +52,6 @@ public class Workout {
     public int getCalories() { return calories; }
     public void setCalories(int calories) { this.calories = calories; }
 
-    // IMPORTANT: Make sure your Firestore doc field is also named "imageUrl"
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
