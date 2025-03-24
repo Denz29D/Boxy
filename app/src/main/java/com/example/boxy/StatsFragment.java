@@ -63,7 +63,7 @@ public class StatsFragment extends Fragment {
             }
         });
 
-        // Time filter button (optional).
+        // Time filter button .
         btnTimeFilter.setOnClickListener(v ->
                 Toast.makeText(requireContext(), "Time filter clicked", Toast.LENGTH_SHORT).show()
         );
