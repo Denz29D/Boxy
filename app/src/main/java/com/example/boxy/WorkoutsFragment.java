@@ -66,7 +66,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 );
     }
 
-    // 1) Called when user taps "Mark Complete" button, saves to Firestore ina subcollection
+    // Called when user taps "Mark Complete" button, saves to Firestore ina subcollection
     @Override
     public void onMarkWorkoutComplete(Workout workout) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -86,7 +86,7 @@ public class WorkoutsFragment extends Fragment implements WorkoutAdapter.OnWorko
                 );
     }
 
-    // 2) Called when user taps "Start" then navigate to WorkoutDetails manually
+    //  Called when user taps "Start" then navigate to WorkoutDetails manually
     @Override
     public void onWorkoutClicked(Workout workout) {
         // Create the details fragment and pass the doc ID via arguments
